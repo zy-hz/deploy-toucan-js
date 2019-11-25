@@ -1,0 +1,8 @@
+node_modules
+/docs/*.~vsdx
+cache
+.cache
+.sample
+.logs
+/toucan-js.zip
+/upgrade

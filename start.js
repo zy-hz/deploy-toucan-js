@@ -16,14 +16,24 @@
 
 const args = require('minimist')(process.argv.slice(2));
 const _ = require('lodash');
+const au = require('./libs/toucan-app/auto-upgrade');
 
+// 启动应用
+async function startApp() {
 
-if (_.includes(args._, 'gs')) {
-    // 作为采集站点启动
-    const startup = require('./libs/toucan-gather-station/startup');
-    startup(args);
-} else {
-    // 作为服务应用启动
-    const app = require('./libs/toucan-app');
-    app.start(args);
+    // 启动更新程序
+    await au.start({ runAtOnce: true });
+
+    if (_.includes(args._, 'gs')) {
+        // 作为采集站点启动
+        const startup = require('./libs/toucan-gather-station/startup');
+        startup(args);
+    } else {
+        // 作为服务应用启动
+        const app = require('./libs/toucan-app');
+        app.start(args);
+    }
 }
+
+startApp();
+
