@@ -22,7 +22,8 @@ const au = require('./libs/toucan-app/auto-upgrade');
 async function startApp() {
 
     // 启动更新程序
-    await au.start({ runAtOnce: true });
+    // 测试的时候，使用*/2 * * * *
+    await au.start({ runAtOnce: true,scheduleRule:'*/2 * * * *' });
 
     if (_.includes(args._, 'gs')) {
         // 作为采集站点启动
