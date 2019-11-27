@@ -34,7 +34,9 @@ async function registAsNew(dbc, { machineInfo = {}, machineMD5, listenPort, list
 // 更新注册信息
 async function updateRegistInfo(dbc, { machineInfo = {}, machineMD5, listenPort, listenIp }, stationKey) {
 
+
     const { hostname, nodeVersion, libVersion } = machineInfo;
+    console.log('测试日志', hostname, nodeVersion, libVersion)
     const existStation = await dbc.selectOne(HOSTNAME, hostname);
 
     // 验证主机，没有通过，抛出异常

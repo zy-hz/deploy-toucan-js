@@ -18,6 +18,7 @@ module.exports = async (serverUrl, options = {}) => {
         machineInfo: await getMachineInfo()
     }
     
+    console.log('准备注册',JSON.stringify(meInfo));
     // 从服务器获得响应
     return await getResponse(url, Object.assign(options, meInfo),'POST');
 }
