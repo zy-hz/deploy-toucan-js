@@ -3,9 +3,9 @@
 //
 const os = require('os');
 const _ = require('lodash');
-const package = require('../../package.json');
 
 async function getMachineInfo() {
+    const package = require('../../package.json');
 
     return {
         hostname: os.hostname(),
