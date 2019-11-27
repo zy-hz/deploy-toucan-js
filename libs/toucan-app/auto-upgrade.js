@@ -50,6 +50,7 @@ class ToucanUpgrade extends ToucanRunner {
 
 function writeUpgradeLog(workDir, gitResponse, npmResult) {
     const dir = path.resolve(workDir, 'upgrade');
+    console.log('upgrade：', dir);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
     const file = path.resolve(dir, `${_.now()}.txt`);
