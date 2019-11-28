@@ -24,10 +24,10 @@ module.exports = async function (ctx, next) {
         }
     } catch (e) {
         // catch 住全局的错误信息
-        console.log('Catch Error: %o', e)
+        console.error(e.message || e.toString());
 
         // 设置状态码为 200 - 服务端错误
-        ctx.status = 200
+        ctx.status = 200;
 
         // 输出详细的错误信息
         ctx.body = {
