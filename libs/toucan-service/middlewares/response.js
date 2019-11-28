@@ -25,7 +25,7 @@ module.exports = async function (ctx, next) {
         }
     } catch (e) {
         // catch 住全局的错误信息
-        console.error(currentDateTimeString(), e.message || e.toString());
+        console.error(currentDateTimeString(), e.message);
 
         // 设置状态码为 200 - 服务端错误
         ctx.status = 200;
