@@ -33,5 +33,15 @@ function getNetworkAddress() {
     return result;
 }
 
+// 获得平台类型
+// 可能的值有 'aix'、 'darwin'、 'freebsd'、 'linux'、 'openbsd'、 'sunos' 和 'win32'
+// 如果 Node.js 在 Android 操作系统上构建，则也可能返回 'android' 值。
+function getPlatformType() {
+    return os.platform()
+}
 
-module.exports = { getMachineInfo, getNetworkAddress }
+function isWindowPlatform() {
+    return os.platform() === 'win32'
+}
+
+module.exports = { getMachineInfo, getNetworkAddress, getPlatformType, isWindowPlatform }
