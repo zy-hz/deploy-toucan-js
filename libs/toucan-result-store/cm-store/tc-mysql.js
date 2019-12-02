@@ -34,24 +34,29 @@ class MysqlResultStore extends ToucanBaseResultStore {
 
     // 存储器的接口
     async save(msg) {
-        const { task = {}, page = {} } = msg;
-        const { pageContent, overSize } = trimPageContent(page.pageContent);
-        await this.dbv.insert(this.storeTableName, {
-            batchId: task.batchId,
-            taskId: task.taskId,
-            runCount: task.runCount,
-            pageUrl: page.pageUrl,
-            hasException: page.hasException,
-            pageSpendTime: page.pageSpendTime,
-            pageContent,
-            overSize
+        const ary = _.castArray(msg);
+        for await (const m of ary) {
+            const { task = {}, page = {} } = m;
+            const { pageContent = '', overSize = 0 } = trimPageContent(page.pageContent);
+            await this.dbv.insert(this.storeTableName, {
+                batchId: task.batchId,
+                taskId: task.taskId,
+                runCount: task.runCount,
+                pageUrl: page.pageUrl,
+                hasException: page.hasException,
+                pageSpendTime: page.pageSpendTime,
+                pageContent,
+                overSize
 
-        })
+            })
+        }
     }
 }
 
 // 裁剪内容，保证能存入数据库
 function trimPageContent(content, maxSize = 1024 * 64) {
+    if (_.isEmpty(content)) return {};
+
     const len = _.size(content);
     return { pageContent: content.substr(0, maxSize - 1), overSize: Math.max(0, len - maxSize) }
 }
