@@ -71,7 +71,7 @@ class RegainGatherResultRunner extends ToucanRunner {
             const tasks = await this.do4Queue(q, batchRegainCount, resultStore);
             
             this.log(`从${q.queue}回收${tasks.length}个采集结果。`);
-            await rsFactory.close();
+            await resultStore.close();
 
             allTask = _.concat(allTask, tasks);
         }
