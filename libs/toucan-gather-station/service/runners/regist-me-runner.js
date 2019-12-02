@@ -16,7 +16,7 @@ class RegistMeRunner extends ToucanRunner {
         super();
 
         // 注册全局通知
-        au.addRestartListener(this.onRestartApp);
+        au.addRestartListener(this.onRestartApp.bind(this));
     }
 
     async scheduleWork(options = {}) {
