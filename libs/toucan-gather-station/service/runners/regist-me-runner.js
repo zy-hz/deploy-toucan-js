@@ -15,18 +15,11 @@ class RegistMeRunner extends ToucanRunner {
     constructor() {
         super();
 
-        // 是否退出计划
-        this.exitSchedule = false;
         // 注册全局通知
         au.addRestartListener(this.onRestartApp.bind(this));
     }
 
     async scheduleWork(options = {}) {
-        // 退出计划
-        if (this.exitSchedule) {
-            this.log('已经退出工作计划');
-            return {}
-        }
 
         const { remote, port } = options;
         let result = false;
@@ -118,8 +111,6 @@ class RegistMeRunner extends ToucanRunner {
 
     // 当准备重启的时候
     async onRestartApp() {
-        // 标记为退出计划
-        this.exitSchedule = true;
         await super.stop();
     }
 }
