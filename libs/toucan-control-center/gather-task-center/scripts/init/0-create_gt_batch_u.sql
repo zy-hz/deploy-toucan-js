@@ -2,7 +2,6 @@
 # 批次详情表
 #
 
-
 /*==============================================================*/
 /* Table: gt_batch_u                                            */
 /*==============================================================*/
@@ -12,6 +11,8 @@ create table gt_batch_u
    taskId               bigint not null auto_increment comment '任务编号',
    taskState            smallint default 0 comment '0-ready,1-reset,10-queue,20-done,21-error',
    taskBody             varchar(1024) default '' comment '任务体，json',
+   urlMD5               char(32) default '' comment '连接的MD5',
+   urlRefCount          int default 0 comment '连接被引用的数量',
    preTaskId            bigint default 0 comment '上一级任务编号',
    rootTaskId           bigint default 0 comment '根任务的编号',
    runCount             smallint default 0 comment '运行次数，推入队列次数',
@@ -34,3 +35,11 @@ create table gt_batch_u
 );
 
 alter table gt_batch_u comment '采集任务详情表，每批任务独立一个表';
+
+/*==============================================================*/
+/* Index: idx_ulrmd5                                            */
+/*==============================================================*/
+create index idx_ulrmd5 on gt_batch_u
+(
+   urlMD5
+);
