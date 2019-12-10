@@ -19,7 +19,7 @@ create table gt_batch_u
    resetCount           smallint default 0 comment '重置次数，（不包括整批重置）',
    doneCount            int default 0 comment '完成次数',
    errorCount           int default 0 comment '错误的次数',
-   errorNo              int default 0 comment '错误编号',
+   errorNo              varchar(32) default '' comment '错误编号',
    errorMessage         varchar(32) default '' comment '错误的信息',
    beginOn              datetime default '0001-01-01 00:00:00' comment '任务开始时间，进入队列',
    endOn                datetime default '0001-01-01 00:00:00' comment '任务结束时间',
