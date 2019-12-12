@@ -39,13 +39,13 @@ class LoadGatherTaskRunner extends ToucanRunner {
 
     // 载入一个任务
     async uploadTask(task, dbc) {
-        const { batchInfo, sourceName, batchFormat, contentFile, partition } = task;
+        const { batchInfo, sourceName, batchFormat, batchOptions, contentFile, partition, datas } = task;
         const { taskBatch, taskBatchDetail, taskBatchPlan } = dbc;
 
         this.log(`准备载入任务从[${sourceName}] - > ${contentFile}`);
 
         // 载入批量任务
-        const batchTasks = batchTaskLoader.load(contentFile, batchFormat, partition);
+        const batchTasks = batchTaskLoader.load(datas || contentFile, batchFormat, partition);
         if (_.isEmpty(batchTasks)) return false;
 
         let idx = 1;
@@ -75,6 +75,7 @@ class LoadGatherTaskRunner extends ToucanRunner {
                 batchId,
                 batchName,
                 batchSource: sourceName,
+                batchOptions: JSON.stringify(batchOptions || {}),
                 taskCount: rows.length,
                 runCount: 1,
                 createOn: currentDateTimeString(),
@@ -88,6 +89,7 @@ class LoadGatherTaskRunner extends ToucanRunner {
             await taskBatchPlan.insert({
                 batchId, homeId, runCount: 1,
                 runPlan: batchInfo.runPlan, nextQueueOn,
+                batchOptions: JSON.stringify(batchOptions || {}),
                 createOn: currentDateTimeString(),
                 // 任务的总数
                 taskResidualCount: rows.length,

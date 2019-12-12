@@ -4,6 +4,7 @@
 
 **最新版本**
 
+- 2019-12-11 发布1.0.16版本
 - 2019-12-10 发布1.0.15版本
 
 ## 一、安装
@@ -93,7 +94,7 @@
 - [微服务] - 采集站点管理中心，简称gsc
 - [微服务] - 采集任务管理中心，简称gtc
 
-### 采集情报站
+### A. 采集情报站
 
 ​	采集情报站是分布式采集系统中的工作端。负责执行服务器（采集任务管理中心）分发给自己的采集各类信息。同时把采集结果报告给服务器。在一个环境中，只能有一个采集情报站。如果您希望充分利用机器资源，建议您可以用docker方式在一台物理机器上部署多个容器，在每个容器中安装一个采集情报站。
 
@@ -136,7 +137,7 @@
 
 4. 
 
-### 采集站点管理中心
+### B. 采集站点管理中心
 
 1. 初始化
 
@@ -154,7 +155,7 @@
 
    
 
-### 采集任务管理中心
+### C. 采集任务管理中心
 
 1. 初始化
 
@@ -172,6 +173,71 @@
 
    
 
+## 三、采集任务导入
+
+​	采集任务管理中心的配置文件中（gather-task-center.config.json），可以指定任务导入的方式。目前支持从目录导入采集任务，配置如下：
+
+```
+    "taskSource":[
+        {
+            "dbType":"dir",
+            "dbVisitor":"../taskUpload",
+            "sourceName":"任务上传目录"
+        }
+    ]
+```
+
+​	采集任务管理中心会自动扫描dbVisitor指定的目录，当发现有新的采集任务文件时，执行自动导入。扫描的间隔周期，可以在采集任务管理中的配置文件中配置，例如：
+
+```
+
+```
+
+​	采集任务文件是一个json格式的文件，但是扩展名必须为.tsk，例如：
+
+```
+{
+    "batchInfo":{
+        "batchName":"我的全站采集",
+        "batchComment":"",
+        "batchOwner":"zy",
+        "batchGroup":"开发",
+        "batchTag":"测试"
+    },
+    "batchFormat":{
+        "lineSplitChar":";",
+        "lineFields":[
+            "productId",
+            "memberId",
+            "shopUrl"
+        ],
+        "targetUrl":"http://shop.ttall.com/offer/${productId}.html"
+    },
+    "partition":{
+        "segmentCount":2,
+        "taskCount":0,
+    },
+	"batchOptions":{
+		"resultQueueName":"result.zy.ttall",
+		"storeTableName":"zy_ttall"
+	},
+	"datas":[
+        "1423564;cn1;https://shop1.ttall.com",
+        "5371230;cn2;https://shop2.ttall.com"
+	]
+}
+```
+
+
+
+
+
+
+
+
+
+
+
 ##项目说明
 
 1. ###文件目录结构
@@ -186,6 +252,7 @@
 
 2. ###功能
   
+- 115 - 在载入任务时，指定结果消息通道和结果存储表名（开发中）
 - 114 - bodani全站采集
 - 113 - 添加demo，19lou，bodani
 - 112 - 采集结果可以按照指定存储方式存储，目前支持：dir | tc-mysql
@@ -208,7 +275,7 @@
 - 103 - [fixed]在一些机器上git更新后，不会自动启动
 - 104 - [fixed]centos系统的情报站，在自动更新重启后，提示stationKey不匹配
 - 105 - [fixed]ER_TRUNCATED_WRONG_VALUE_FOR_FIELD，不支持utf8mb4格式
-- 106 - windows-1252 页面不能解码
+- 106 - [fixed]windows-1252 页面不能解码
 
 
 ## 测试方案
